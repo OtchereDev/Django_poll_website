@@ -5,7 +5,8 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('poll_question.urls',namespace='poll_app'))
+    path('',include('poll_question.urls',namespace='poll_app')),
+    path('accounts/',include('authentication.urls',namespace='accounts'))
 ]
 
 

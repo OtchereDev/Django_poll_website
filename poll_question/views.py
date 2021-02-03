@@ -5,6 +5,11 @@ from .form import TestForm
 
 def home(request):
     form=TestForm()
+    if request.method=='POST':
+       for i in request.POST.keys():
+           if 'question' in i:
+               print(i)
+        # print((request.POST).keys())
     return render(request,'index.html',context={
         'form':form
     })
