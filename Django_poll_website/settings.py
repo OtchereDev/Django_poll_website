@@ -26,7 +26,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # for heroku, heroku url
+    # localhost
+    # 127.0.0.1
+]
 
 
 # Application definition
@@ -123,10 +127,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL='/media/'
 
-STATIC_ROOT=BASE_DIR/'static_root'
-MEDIA_ROOT=BASE_DIR/'media_root'
+# for heroku
+# STATIC_ROOT=BASE_DIR/'staticfiles'
+# STATICFILES_STORAGE='whitenoise.django.GzipManifestStaticFIlesStorage'
 
-STATICFILES_DIR=[
+STATICFILES_DIRS=[
     BASE_DIR/'static',
 ]
+
+STATIC_ROOT=BASE_DIR/'static_root'
+MEDIA_ROOT=BASE_DIR/'media_root'
 
