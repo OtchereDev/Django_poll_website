@@ -1,0 +1,18 @@
+.create_box{
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.create_box .content{
+    width: 50%;
+    border: 1px dashed black;
+    padding: 10%;
+    display: flex;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 255, 0.322);
+}
