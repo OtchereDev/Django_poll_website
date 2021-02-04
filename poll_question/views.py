@@ -14,6 +14,9 @@ def home(request):
         'form':form
     })
 
+def create_form(request):
+    return render(request, 'poll/create.html', {})
+    
 
 # poll templates needed :
 # homepage
