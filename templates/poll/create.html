@@ -1,0 +1,37 @@
+{% extends '../base.html' %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/create_style.css' %}">
+
+{% endblock css %}
+
+{% block content %}
+<div class="container create_box">
+    <h2 class='text-muted text-centered mb-5'>
+     Create an interactive poll for your next poll
+    </h2>
+    <div class="content">
+        <button class="btn btn-success">
+            Create a Poll
+        </button>
+    </div>
+    <div class="poll_create">
+        <form action="" method="post">
+            <div class="question_answer">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Enter your Poll Question</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter question">
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter the answer">
+                    
+                    <button type="button" class="btn btn-primary">
+                        Add an answer
+                    </button>
+                  </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
