@@ -4,34 +4,29 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/create_style.css' %}">
-
+<script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
 {% endblock css %}
 
 {% block content %}
-<div class="container create_box">
-    <h2 class='text-muted text-centered mb-5'>
+<div class="container holder pt-3 create_box">
+    <h2 class='text-muted text-centered mb-5 create_title'>
      Create an interactive poll for your next poll
     </h2>
     <div class="content">
-        <button class="btn btn-success">
+        <button class="btn btn-success create_btn">
             Create a Poll
         </button>
     </div>
     <div class="poll_create">
-        <form action="" method="post">
-            <div class="question_answer">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Enter your Poll Question</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter question">
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter the answer">
-                    
-                    <button type="button" class="btn btn-primary">
-                        Add an answer
-                    </button>
-                  </div>
-            </div>
-        </form>
+        <button class="btn btn-primary">
+            add a question
+        </button>
     </div>
 </div>
 
 {% endblock content %}
+
+{%block script%}
+<script src="{%static 'js/create.js'%}"></script>
+{%endblock script%}
