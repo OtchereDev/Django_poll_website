@@ -1,5 +1,5 @@
 .create_box{
-    height: 400px;
+    height: 450px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,11 +8,40 @@
 
 .create_box .content{
     width: 50%;
-    border: 1px dashed black;
+    border: 2px dashed rgba(255, 0, 255, 0.322);
     padding: 10%;
     display: flex;
     border-radius: 15px;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 255, 0.322);
+    /* background-color: rgba(0, 0, 255, 0.322); */
+}
+
+.poll_create{
+    display: none;
+}
+
+.question_answer{
+    position: relative;
+}
+
+.question_answer .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    border-radius: 50%;
+}
+
+.question_answer .close  a{
+    color: red;
+}
+
+.question_answer .close ion-icon{
+    font-size: 24px;
 }
