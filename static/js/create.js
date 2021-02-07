@@ -18,6 +18,11 @@ const title_div=`
 const form=`
 <form action="" method="post" class='poll_form my-3'>
     <h4>Add a question</h4>
+    <input type='text' name='poll_title' placeholder='Poll Title' required class="form-control my-2" ></input>
+    <div class="input-group mb-3">
+       
+        <textarea class="form-control" required name='description' placeholder='Poll description*' aria-label="With textarea"></textarea>
+    </div>
 </form>`
 
 
