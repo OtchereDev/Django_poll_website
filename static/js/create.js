@@ -128,6 +128,12 @@ create_btn.addEventListener('click',e=>{
             if (e.target.classList.contains('closed')){
                 e.target.parentNode.parentNode.remove()
             }
+
+            if(poll_form.querySelectorAll('.question_answer').length===0){
+                const submit_btn=poll_form.querySelector('.submit_btn')
+
+                submit_btn.remove()
+            }
         })
         
     })
