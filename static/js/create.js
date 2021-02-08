@@ -28,6 +28,12 @@ const form=`
 </form>`
 
 
+const error=`<div class="alert alert-warning alert-dismissible fade show errors" role="alert">
+<strong>Each Question</strong> needs atleast two valid answers.
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>`
+
+
 
 
 function question_ceator(question_num){
@@ -94,6 +100,7 @@ create_btn.addEventListener('click',e=>{
 
         const submit_btn=poll_form.querySelector('.submit_btn')
 
+       
         
 
         if (submit_btn===null){
@@ -105,7 +112,20 @@ create_btn.addEventListener('click',e=>{
             
         }else{
             let current_ques_num= poll_form.childElementCount-3
+            // if(current_ques_num >= 5){
+            //     question_btn.disabled=true
+            //     question_btn.style.cursor='not-allowed'
+            // }else{
+            //     question_btn.disabled=false
+            //     question_btn.style.cursor='pointer'
+            // }
+
+           if (current_ques_num<=5){
             poll_form.insertBefore(question_ceator('question_'+current_ques_num),submit_btn.parentNode)
+            
+
+           }
+          
         }
         
 
@@ -123,6 +143,13 @@ create_btn.addEventListener('click',e=>{
                 let answer_num=parent.querySelectorAll('.answer').length +1
 
                 const ans_btn=parent.querySelector('.ans_btn')
+
+                if(answer_num >= 3){
+                    ans_btn.disabled=true
+                    ans_btn.style.cursor='not-allowed'
+                }
+
+               
 
                 parent.insertBefore(answer_creator('answer_'+answer_num+'_q'+ques_num),ans_btn)
 
@@ -144,11 +171,46 @@ create_btn.addEventListener('click',e=>{
 
         poll_form.addEventListener('submit',e=>{
             e.preventDefault()
-            console.log('submited')
-            console.log(Array.from(poll_form.querySelectorAll('input,textarea')).reduce((acc,input)=>({...acc,[input.name]:input.value}),{}))
+            e.stopImmediatePropagation()
+            
+            const all_question= poll_form.querySelectorAll('.question_answer')
+            
+
+            all_question.forEach(question=>{
+                const answers=question.querySelectorAll('.answer')
+                const answers_list=[]
+                answers.forEach(answer=>{
+                    answers_list.push(answer.value)
+                })
+                // console.log(question)
+                const error_box=document.querySelector('.error_box')
+                console.log(answers_list)
+                if(answers_list.length<2 || answers_list.includes('')){
+                    const check_error=document.querySelector('.errors')
+                    
+                    console.log(check_error)
+                    if(check_error===null){
+                        error_box.innerHTML=error
+                    }
+                }else{
+                    question.style.border='unset'
+                    error_box.innerHTML=''
+                    console.log('submited')
+                    // poll_form.reset()
+                }
+            })
+            // console.log(all_question)
+            
+
+            // console.log(Array.from(poll_form.querySelectorAll('input,textarea')).reduce((acc,input)=>({...acc,[input.name]:input.value}),{}))
         })
+
+      
         
     })
+
+
+    
     
 
 
