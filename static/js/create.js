@@ -45,7 +45,7 @@ function question_ceator(question_num){
     </div><div class="${question_num} form-group">
    
     <label for="exampleInputEmail1">Enter your Poll Question</label>
-    <input type="text" name='${question_num}' class="form-control my-2" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter question">
+    <input type="text" name='${question_num}' class="form-control my-2 question" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter question">
 
     <button type="button" class=" ans_btn btn btn-primary">
         Add an answer
@@ -67,7 +67,6 @@ answer.type='text'
 
 return answer
 }
-
 
 
 const form_submit_sec=`
@@ -112,13 +111,6 @@ create_btn.addEventListener('click',e=>{
             
         }else{
             let current_ques_num= poll_form.childElementCount-3
-            // if(current_ques_num >= 5){
-            //     question_btn.disabled=true
-            //     question_btn.style.cursor='not-allowed'
-            // }else{
-            //     question_btn.disabled=false
-            //     question_btn.style.cursor='pointer'
-            // }
 
            if (current_ques_num<=5){
             poll_form.insertBefore(question_ceator('question_'+current_ques_num),submit_btn.parentNode)
@@ -174,6 +166,47 @@ create_btn.addEventListener('click',e=>{
             e.stopImmediatePropagation()
             
             const all_question= poll_form.querySelectorAll('.question_answer')
+
+            const all_input=poll_form.querySelectorAll('input')
+            
+
+            const question_inputs=[]
+            const answer_inputs=[]
+            all_input.forEach(input=>{
+                if(input.classList.contains('question')){
+                    question_inputs.push(input)
+                }else if(input.classList.contains('answer')){
+                    answer_inputs.push(input)
+                }
+            })
+
+            const grouped_qa=[]
+          
+
+            for(let i=0; i<question_inputs.length;i++){
+                k={}
+                
+                k[`question${i+1}`]=question_inputs[i].value
+                
+                
+                for(let j=0;j<all_input.length;j++){
+                    if(all_input[j].name.endsWith(`q${i+1}`)){
+                        
+                        let size=Object.keys(k).length
+                        if(size>=2){
+                            k[`answer${size}`]=all_input[j].value
+                        }else{
+                            k[`answer${size}`]=all_input[j].value
+                        }
+                    }
+                    
+                 
+                }
+                grouped_qa.push(k)
+                
+            }
+
+            console.log(grouped_qa)
             
 
             all_question.forEach(question=>{
@@ -184,7 +217,7 @@ create_btn.addEventListener('click',e=>{
                 })
                 // console.log(question)
                 const error_box=document.querySelector('.error_box')
-                console.log(answers_list)
+                // console.log(answers_list)
                 if(answers_list.length<2 || answers_list.includes('')){
                     const check_error=document.querySelector('.errors')
                     
@@ -195,7 +228,7 @@ create_btn.addEventListener('click',e=>{
                 }else{
                     question.style.border='unset'
                     error_box.innerHTML=''
-                    console.log('submited')
+                    // console.log('submited')
                     // poll_form.reset()
                 }
             })
