@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .form import TestForm
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
+import json
 # Create your views here.
 
 def home(request):
@@ -19,6 +22,13 @@ def create_form(request):
 
 def take_poll(request):
     return render(request,'poll/take_poll.html')
+
+
+@csrf_exempt
+def answers(request):
+    if request.method=='POST':
+        print(json.loads(request.body))
+    return JsonResponse({'all':'good man'})
     
 
 # poll templates needed :
