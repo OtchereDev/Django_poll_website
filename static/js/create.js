@@ -20,10 +20,10 @@ const title_div=`
 const form=`
 <form action="" method="post" class='poll_form my-3'>
     <h4>Add a question</h4>
-    <input type='text' name='poll_title' placeholder='Poll Title' required class="form-control my-2" ></input>
+    <input type='text' name='poll_title' placeholder='Poll Title' required class="form-control my-2 poll_title" ></input>
     <div class="input-group mb-3">
        
-        <textarea class="form-control" required name='description' placeholder='Poll description*' aria-label="With textarea"></textarea>
+        <textarea class="form-control poll_description" required name='description' placeholder='Poll description*' aria-label="With textarea"></textarea>
     </div>
 </form>`
 
@@ -180,7 +180,17 @@ create_btn.addEventListener('click',e=>{
                 }
             })
 
+            const poll_description=poll_form.querySelector('textarea.poll_description').value
+            const poll_title=poll_form.querySelector('input.poll_title').value
+
+            const about_poll={
+                'poll_title':poll_title,
+                'poll_description':poll_description
+            }
+
             const grouped_qa=[]
+
+            grouped_qa.push(about_poll)
           
 
             for(let i=0; i<question_inputs.length;i++){
