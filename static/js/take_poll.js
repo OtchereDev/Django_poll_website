@@ -2,6 +2,10 @@
 const poll_container=document.querySelector('.poll')
 const submit_btn=document.querySelector('.submit_btn')
 const loader_overlay=document.querySelector('.loader_overlay')
+const poll_questions=document.querySelectorAll('.poll_question_answers')
+const poll_title = document.querySelector('.poll_title').innerText.trim()
+const answer_overlay=document.querySelectorAll('.overlay')
+
 
 const submit_progress=`<div class="spinner-border text-light" style="width: 7rem; height: 7rem;" role="status">
 <span class="visually-hidden">Loading...</span>
@@ -16,6 +20,19 @@ const checked=`<div style="width: 30rem; height: 30rem; display:flex;justify-con
 </div>
 <h2 class='text-light mt-4'> Submitted :)</h2>`
 
+async function postData(url = '', data = {}) {
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify(data)
+    });
+    return response.json(); 
+  }
+
 poll_container.addEventListener('click',e=>{
     if(e.target.classList.contains('answer')){
         const answer_groups=e.target.parentElement.querySelectorAll('.answer')
@@ -26,13 +43,52 @@ poll_container.addEventListener('click',e=>{
     }
 })
 
+
 submit_btn.addEventListener('click', e=>{
     loader_overlay.style.width='100%'
     loader_overlay.innerHTML+=submit_progress
 
+    const answer_list=[]
+
+    poll_questions.forEach(question=>{
+        const answers=Array.from(question.querySelectorAll('.answer'))
+        const selected_answer=question.querySelector('.selected')
+
+        if(selected_answer !== null){
+            const index=answers.indexOf(selected_answer)+1
+            answer_list.push(index)
+        }else{
+            answer_list.push(null)
+        }
+        
+    })
+
+    const data={}
+    data['title']=poll_title
+    data['answers']=answer_list
+
+    postData('/answers/', data).then(data => {
+      console.log(data); 
+    });
+
+    
+
     setTimeout(function makeCheck(){
         loader_overlay.innerHTML=checked
     },5000)
+
+    setTimeout(function showResult(){
+        const all_answer=document.querySelectorAll('.answer')
+        loader_overlay.style.display='none'
+        submit_btn.remove()
+        all_answer.forEach(answer=>{
+            answer.classList.remove('selected')
+        })
+        answer_overlay.forEach(overlay=>{
+            overlay.style.width='50%'
+        })
+    },7005)
+    
 
 })
 
