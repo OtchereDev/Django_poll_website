@@ -1,0 +1,55 @@
+html{
+    position: relative;
+}
+
+body .loader_overlay{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    width: 0;
+    transition: width 0.2s ease-in;
+    z-index: 3;
+}
+
+.answer_box{
+    margin-left: 20px;
+    width: 90%;
+}
+
+.answer{
+    border: 1px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.answer .overlay{
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    background: rgb(212,235,242);
+    top: 0;
+    z-index: -1;
+    left: 0;
+    border-radius: 10px;
+}
+
+
+.answer:nth-child(2) .overlay{
+    background-color: rgb(242,212,235);
+}
+
+.answer:nth-child(3) .overlay{
+    background-color: rgb(235,242,212);
+}
+
+.answer.selected{
+    background-color: rgb(212,235,242);
+   
+}
