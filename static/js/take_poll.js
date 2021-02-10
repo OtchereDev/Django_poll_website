@@ -43,10 +43,15 @@ poll_container.addEventListener('click',e=>{
     }
 })
 
+postData('/users/',{}).then(res=>{
+    console.log(res)
+})
+
 
 submit_btn.addEventListener('click', e=>{
     loader_overlay.style.width='100%'
     loader_overlay.innerHTML+=submit_progress
+    const uuid=location.pathname.split('/')[2]
 
     const answer_list=[]
 
@@ -64,11 +69,35 @@ submit_btn.addEventListener('click', e=>{
     })
 
     const data={}
-    data['title']=poll_title
+    data['uuid']=uuid
     data['answers']=answer_list
 
     postData('/answers/', data).then(data => {
-      console.log(data); 
+    //   console.log(data); 
+      setTimeout(function showResult(){
+        const all_answer=document.querySelectorAll('.answer')
+        loader_overlay.style.display='none'
+        submit_btn.remove()
+        all_answer.forEach(answer=>{
+            answer.classList.remove('selected')
+        })
+        answer_overlay.forEach((overlay,index)=>{
+            let width=parseInt((data['response'][index]/data['poll_count'])*100)
+            
+            
+            overlay.style.display='block'
+            if(width>0){
+            overlay.style.width=`${width}%`
+            overlay.classList.add('padded')
+            }
+
+            if(width>=50){
+                overlay.innerHTML=`${width}%/100%`
+            }
+        })
+    },7005)
+    }).catch(e=>{
+        console.log(e)
     });
 
     
@@ -77,17 +106,7 @@ submit_btn.addEventListener('click', e=>{
         loader_overlay.innerHTML=checked
     },5000)
 
-    setTimeout(function showResult(){
-        const all_answer=document.querySelectorAll('.answer')
-        loader_overlay.style.display='none'
-        submit_btn.remove()
-        all_answer.forEach(answer=>{
-            answer.classList.remove('selected')
-        })
-        answer_overlay.forEach(overlay=>{
-            overlay.style.width='50%'
-        })
-    },7005)
+    
     
 
 })
