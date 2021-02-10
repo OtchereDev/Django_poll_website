@@ -1,5 +1,6 @@
 {% extends '../base.html' %}
 {%load static%}
+{% load index %}
 {%block css%}
 <link rel="stylesheet" href="{%static 'css/take_poll.css'%}">
 {%endblock css%}
@@ -9,53 +10,37 @@
     <div class="loader_overlay"></div>
     <div class="poll mb-5">
         <h3 class="poll_title">
-            Poll Title 
+            {{poll.poll_title}} 
         </h3>
         <hr>
         <p>
-            <strong>Description</strong>: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam iure dolor cum dolorem provident, quas temporibus explicabo ducimus saepe. Tempora officia, perferendis facilis eligendi consequatur eaque natus quae ipsa numquam?
+            <strong>Description</strong>: {{poll.poll_description}}
         </p>
-        <div class="poll_question_answers mt-4">
+        
+            {% for j in poll.questions.all  %}
+                <div class="poll_question_answers mt-4">
             <div class="poll_question">
-                <strong>Q1.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nobis, corrupti voluptatum rem est perferendis excepturi mollitia quo sequi. Culpa ea totam soluta doloremque quaerat harum neque amet aliquid necessitatibus.
+                <strong>Q{{forloop.counter}}.</strong> {{j.question}}
             </div>
             <div class="answer_box ml-3">
+          
+            {% for k in j.answers.all %}
                 <div class="answer mt-2 p-3">
                     <div class="overlay"></div>
-                    <strong>A.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    {% with counter=forloop.counter|add:"3" %}
+                    <strong>{{letters|index:forloop.counter0}}. </strong>  {{k.content}}
+                    {% endwith %}
+                    
                 </div>
-                <div class="answer mt-2 p-3">
-                    <div class="overlay"></div>
-                    <strong>B.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                </div>
-                <div class="answer mt-2 p-3">
-                    <div class="overlay"></div>
-                    <strong>C.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                </div>
+            {% endfor %}
+                
+                
             </div>  
 
         </div>
 
-        <div class="poll_question_answers mt-4">
-            <div class="poll_question">
-                <strong>Q2.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nobis, corrupti voluptatum rem est perferendis excepturi mollitia quo sequi. Culpa ea totam soluta doloremque quaerat harum neque amet aliquid necessitatibus.
-            </div>
-            <div class="answer_box ml-3">
-                <div class="answer mt-2 p-3">
-                    <div class="overlay"></div>
-                    <strong>A.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                </div>
-                <div class="answer mt-2 p-3">
-                    <div class="overlay"></div>
-                    <strong>B.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                </div>
-                <div class="answer mt-2 p-3">
-                    <div class="overlay"></div>
-                    <strong>C.</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                </div>
-            </div>  
-
-        </div>
+            {% endfor %}
+       
         <buttton class="submit_btn btn btn-primary mt-4">
             Submit 
         </buttton>
