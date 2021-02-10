@@ -38,6 +38,14 @@ body .loader_overlay{
     z-index: -1;
     left: 0;
     border-radius: 10px;
+    display: none;
+    text-align: right;
+    
+}
+
+.answer .overlay.padded{
+    padding-right: 2%;
+    padding-top: 2%;
 }
 
 
