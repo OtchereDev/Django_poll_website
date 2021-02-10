@@ -68,6 +68,19 @@ answer.type='text'
 return answer
 }
 
+async function postData(url = '', data = {}) {
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify(data)
+    });
+    return response.json(); 
+  }
+
 
 const form_submit_sec=`
 <div class='text-centered'>
@@ -217,6 +230,16 @@ create_btn.addEventListener('click',e=>{
             }
 
             console.log(grouped_qa)
+
+            // postData('/create/',grouped_qa).then(data=>{
+            //     console.log(data)
+            // }).catch(e=>{
+            //     console.log(e)
+            // })
+
+            postData('/create/',grouped_qa).then(data =>{
+                console.log(data)
+            })
             
 
             all_question.forEach(question=>{
