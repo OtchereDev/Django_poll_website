@@ -138,3 +138,7 @@ STATICFILES_DIRS=[
 STATIC_ROOT=BASE_DIR/'static_root'
 MEDIA_ROOT=BASE_DIR/'media_root'
 
+
+AUTH_USER_MODEL='authentication.CustomUser'
+
+LOGIN_REDIRECT_URL='/'
