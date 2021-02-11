@@ -3,7 +3,8 @@
 {% block content %}
     <div class="row mt-5">
         <div class="col-md-3">
-            
+        
+            <input type="hidden" name="next" value="{{ next }}">
         </div>
         <div class="col-md-6"> 
             <h2 class="text-center text-muted mb-5">
@@ -12,7 +13,19 @@
         <form method='POST' >
         {% csrf_token %}
         <!-- {{form}} -->
-        
+       {% if form.non_field_errors  %}
+            {% for error in form.non_field_errors %}
+               
+                    <div class='mt-2 error_box'>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>{{ error|escape }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div> 
+          
+                
+            {% endfor %}
+        {% endif %}
           
         <div class="input-group mb-3">
             
@@ -20,7 +33,7 @@
         </div>
         <div class="input-group mb-3">
             
-            <input type="text" name='password' id="id_password" autocomplete="off" class="form-control" placeholder="Password" aria-label="word" aria-describedby="basic-addon1">
+            <input type="password" name='password' id="id_password" autocomplete="off" class="form-control" placeholder="Password" aria-label="word" aria-describedby="basic-addon1">
         </div>
         <button type='submit' class="btn btn-primary">Log In</button>
         </form>
