@@ -1,40 +1,38 @@
 from django.shortcuts import render
-from .form import TestForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
-from .models import Poll,Question,Answer
+from .models import Poll,Question,Answer,Voter
+from authentication.models import CustomUser
 
 import json
 from string import ascii_uppercase
-# Create your views here.
+
 
 @csrf_exempt
 def returnUser(request):
     if request.method=='POST':
         if request.user.is_authenticated:
             return JsonResponse({
-                'user':request.user.username
+                'user':request.user.email
             })
         else:
             return JsonResponse({
                 'user':None
             })
 
+
 def home(request):
-    form=TestForm()
+ 
     poll=Poll.objects.all()
-    if request.method=='POST':
-       for i in request.POST.keys():
-           if 'question' in i:
-               print(i)
-        # print((request.POST).keys())
-    return render(request,'index.html',context={
-        'form':form,
+  
+    return render(request,'poll/index.html',context={
         'poll':poll
     })
 
 
+@login_required
 @csrf_exempt
 def create_form(request):
     if request.method=='POST':
@@ -42,7 +40,8 @@ def create_form(request):
         about=data[0]
    
         question_answer=data[1:]
-        poll=Poll.objects.create(poll_title=about['poll_title'],poll_description=about['poll_description'])
+        poll=Poll.objects.create(poll_title=about['poll_title'],
+                                poll_description=about['poll_description'])
 
         
         for i in question_answer:
@@ -65,12 +64,11 @@ def create_form(request):
         return JsonResponse({'all': 'good'})
     return render(request, 'poll/create.html', {})
 
+
 def take_poll(request,uuid):
     poll=Poll.objects.filter(uuid=uuid).first() 
-    return render(request,'poll/take_poll.html',{'poll':poll,'letters':ascii_uppercase})
-
-
-
+    return render(request,'poll/take_poll.html',
+                {'poll':poll,'letters':ascii_uppercase})
 
 
 @csrf_exempt
@@ -81,25 +79,56 @@ def answers(request):
         answers=[i.answers.all() for i in poll.questions.all()]
         selected_answers=[]
 
-        for index,listobj in enumerate(answers):
-            i=data['answers'][index]
-           
-            if i != None:
-                i=i-1
-                j=listobj[i]
-                j.counts+=1
-                j.save()
+        if data.get('user'):
+            user=CustomUser.objects.get(email=data.get('user'))
+            voted=poll.responses.all().filter(user=user).exists()
+
+            if not voted:
+                voter= Voter.objects.create(user=user)
+
+                for index,listobj in enumerate(answers):
+                    i=data['answers'][index]
+                
+                    if i != None:
+                        i=i-1
+                        j=listobj[i]
+                        j.counts+=1
+                        print(j.counts)
+                        j.save()
+
+            print(data.get('user'))
+        elif data.get('browser_id'):
+            browser_id=data.get('browser_id')
+            voted=poll.responses.all().filter(browser_id=browser_id).exists()      # voter=Voter.objects.create
+
+            if not voted:
+                voter= Voter.objects.create(browser_id=browser_id)
+
+                for index,listobj in enumerate(answers):
+                    i=data['answers'][index]
+                
+                    if i != None:
+                        i=i-1
+                        j=listobj[i]
+                        j.counts+=1
+                        j.save()
+        try:
+            if voter:
+                print(voter)
+                poll.responses.add(voter)
+        except:
+            pass
         
-        poll.responses+=1
+        
         poll.save()
+
+        current_poll_response=[i.answers.all() for i in poll.questions.all()]
         
+        response=[j.counts for i in current_poll_response  for j in i]
 
+        total_response=poll.responses.all().count()
 
-        
-
-        response=[j.counts for i in answers  for j in i]
-
-    return JsonResponse({'response':response,'poll_count':poll.responses})
+    return JsonResponse({'response':response,'poll_count':total_response})
     
 
 # poll templates needed :
@@ -110,3 +139,23 @@ def answers(request):
 # create a poll
 # take a poll 
 # poll results**
+
+# if data.get('user'):
+#     user=CustomUser.objects.get(email=data.get('user'))
+#     voted=poll.responses.all().filter(user=user).exists()
+
+#     if not voted:
+#         voter= Voter.objects.create(user=user)
+
+#     print(data.get('user'))
+# elif data.get('browser_id'):
+#     browser_id=data.get('browser_id')
+#     voted=poll.responses.all().filter(browser_id=browser_id).exists()      # voter=Voter.objects.create
+
+#     if not voted:
+#         voter= Voter.objects.create(browser_id=browser_id)
+# try:
+#     if voter:
+#         poll.responses.add(voter)
+# except:
+#     pass
