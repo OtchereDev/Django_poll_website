@@ -47,7 +47,6 @@ let user
 
 postData('/users/',{}).then(res=>{
     user = res.user
-    console.log(user)
 })
 
 
@@ -81,10 +80,7 @@ submit_btn.addEventListener('click', e=>{
         data['browser_id']='generated id from FE'
     }
 
-    console.log(user,data)
-
     postData('/answers/', data).then(data => {
-      console.log(data); 
       setTimeout(function showResult(){
         const all_answer=document.querySelectorAll('.answer')
         loader_overlay.style.display='none'
@@ -94,7 +90,6 @@ submit_btn.addEventListener('click', e=>{
         })
         answer_overlay.forEach((overlay,index)=>{
             let width=parseInt((data['response'][index]/data['poll_count'])*100)
-            console.log(width)
             
             overlay.style.display='block'
             if(width>0){
