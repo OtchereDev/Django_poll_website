@@ -41,9 +41,13 @@
 
             {% endfor %}
        
-        <buttton class="submit_btn btn btn-primary mt-4">
-            Submit 
-        </buttton>
+        <a {% if request.user.is_authenticated and poll.signin_vote_only %}
+        type='submit' class='btn btn-primary mt-4 submit_btn'>Submit
+        {% elif not poll.signin_vote_only%}
+        type='submit' class='btn btn-primary mt-4 submit_btn'>Submit
+        {% else %}
+        class='btn btn-success mt-4' href="{% url 'accounts:login' %}?next=/take_poll/{{poll.uuid}}">Login to Take this Poll
+        {% endif %} </a>
     </div>
 </div>
 
