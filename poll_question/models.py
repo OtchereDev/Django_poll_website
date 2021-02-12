@@ -12,7 +12,7 @@ class Poll(models.Model):
     responses=models.ManyToManyField('Voter')
     uuid=models.UUIDField(default=uuid.uuid4, editable=False)
     signin_vote_only=models.BooleanField(default=False)
-    created_by=models.CharField(max_length=250)
+    created_by=models.ForeignKey(CustomUser,on_delete=models.SET_NULL,null=True)
     date_created=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -45,4 +45,5 @@ class Voter(models.Model):
             return str(self.user)
         else:
             return self.browser_id
+    
     
