@@ -37,11 +37,14 @@ def home(request):
 def create_form(request):
     if request.method=='POST':
         data=json.loads(request.body)
-        about=data[0]
-   
+        about=data[0]  
         question_answer=data[1:]
+        author=CustomUser.objects.get(email=about['author'])
+        signin_voters_only=about['sign_in_voters']
         poll=Poll.objects.create(poll_title=about['poll_title'],
-                                poll_description=about['poll_description'])
+                                poll_description=about['poll_description'],
+                                signin_vote_only=signin_voters_only,
+                                created_by=author)
 
         
         for i in question_answer:
@@ -69,6 +72,11 @@ def take_poll(request,uuid):
     poll=Poll.objects.filter(uuid=uuid).first() 
     return render(request,'poll/take_poll.html',
                 {'poll':poll,'letters':ascii_uppercase})
+
+
+@login_required
+def poll_creation(request):
+    return render(request,'poll/poll_creation.html')
 
 
 @csrf_exempt
@@ -130,32 +138,3 @@ def answers(request):
 
     return JsonResponse({'response':response,'poll_count':total_response})
     
-
-# poll templates needed :
-# homepage
-# sign up
-# sign in
-# sign out 
-# create a poll
-# take a poll 
-# poll results**
-
-# if data.get('user'):
-#     user=CustomUser.objects.get(email=data.get('user'))
-#     voted=poll.responses.all().filter(user=user).exists()
-
-#     if not voted:
-#         voter= Voter.objects.create(user=user)
-
-#     print(data.get('user'))
-# elif data.get('browser_id'):
-#     browser_id=data.get('browser_id')
-#     voted=poll.responses.all().filter(browser_id=browser_id).exists()      # voter=Voter.objects.create
-
-#     if not voted:
-#         voter= Voter.objects.create(browser_id=browser_id)
-# try:
-#     if voter:
-#         poll.responses.add(voter)
-# except:
-#     pass
