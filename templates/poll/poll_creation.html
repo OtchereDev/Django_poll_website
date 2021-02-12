@@ -1,0 +1,94 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block css %}
+{% comment %} <link rel="stylesheet" href="{% static 'css/create_style.css' %}"> {% endcomment %}
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+    <style>
+
+    html{
+        position: relative;
+    }
+
+    body .loader_overlay{
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        height: 100%;
+        width: 0;
+        transition: width 0.2s ease-in;
+        z-index: 3;
+    }
+
+    .question_answer .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    border-radius: 50%;
+    }
+
+    .question_answer .close  a{
+        color: red;
+    }
+
+    .question_answer .close ion-icon{
+        font-size: 24px;
+    }
+
+    .question_answer{
+    position: relative;
+    }
+    </style>
+{% endblock css %}
+
+{% block content %}
+<div class="container holder pt-3 create_box">
+    <div class="loader_overlay"></div>
+
+    <div class="d-flex justify-content-between" style="width: 100%;">
+        <h2 class='text-muted text-centered  create_title'>
+        Create Your Poll below
+           </h2>
+        <button class="btn btn-success ques_btn d-inline-flex align-items-center">
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>Add a question
+        </button>
+    </div>
+
+    <form action="" method="post" class='poll_form my-3'>
+        <h4>Add a question</h4>
+        <input type='text' name='poll_title' placeholder='Poll Title' required class="form-control my-2 poll_title" ></input>
+        <div class="input-group mb-3">
+        
+            <textarea class="form-control poll_description" required name='description' placeholder='Poll description*' aria-label="With textarea"></textarea>
+        </div>
+        <div class='row'>
+            <div class="form-check form-switch mx-2">
+                <input class="form-check-input signed_voters" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">If Checked will Allowed only Sign In members to vote on this poll</label>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+
+{% endblock content %}
+
+{%block script%}
+<script src="{%static 'js/create_poll.js'%}"></script>
+{%endblock script%}
+
